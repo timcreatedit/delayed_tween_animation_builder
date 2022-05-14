@@ -89,10 +89,13 @@ class DelayedTweenAnimationBuilder<T extends Object?> extends StatefulWidget {
 class _DelayedTweenAnimationBuilderState<T extends Object?>
     extends State<DelayedTweenAnimationBuilder<T>> {
   late Tween<T> _tween = widget.tween;
-  late final Tween<T> _tweenInit =
-      Tween(begin: widget.tween.begin, end: widget.tween.begin);
 
-  bool _delayRanOut = false;
+  late final Tween<T> _constantBeginTween = Tween(
+    begin: widget.tween.begin,
+    end: widget.tween.begin,
+  );
+
+  bool _delayExpired = false;
 
   @override
   void initState() {
@@ -106,18 +109,16 @@ class _DelayedTweenAnimationBuilderState<T extends Object?>
     if (oldWidget.tween.end != widget.tween.end) _setTween();
   }
 
-  _setTween() => setState(() {
-        _tween = _delayRanOut ? widget.tween : _tweenInit;
-
-        if (!_delayRanOut) {
-          Future.delayed(widget.delay).then((_) {
-            if (mounted) {
-              setState(() {
-                _delayRanOut = widget.delayOnlyOnce;
-                _tween = widget.tween;
-              });
-            }
-          });
+  _setTween() => setState(() async {
+        _tween = _delayExpired ? widget.tween : _constantBeginTween;
+        if (!_delayExpired) {
+          await Future.delayed(widget.delay);
+          if (mounted) {
+            setState(() {
+              _delayExpired = widget.delayOnlyOnce;
+              _tween = widget.tween;
+            });
+          }
         }
       });
 
