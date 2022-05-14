@@ -1,6 +1,6 @@
 name: delayed_tween_animation_builder
 description: Mimics the TweenAnimationBuilder but with an optional delay.
-version: 0.0.1
+version: 0.5.0
 repository: https://github.com/timcreatedit/delayed_tween_animation_builder
 
 environment:

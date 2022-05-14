@@ -11,29 +11,36 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages). 
 -->
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+``DelayedTweenAnimationBuilder`` behaves like Flutter's ``TweenAnimationBuilder``but adds 
+the option to delay the animation by a given duration.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+- Delays are one of the most useful features of ``simple_animations``'s ``PlayAnimation`` Widget - use them without depending on the entire package! 
+- Delay the initial animation of a ``TweenAnimationBuilder``
+- Optionally delay every subsequent animation of a change
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
-
 ```dart
-const like = 'sample';
+// This is how you would have a widget appear after 1 second
+Widget build(BuildContext context) {
+  return DelayedTweenAnimationBuilder<double>(
+    delayOnlyOnce: true,
+    duration: const Duration(seconds: 1),
+    tween: Tween(begin: 0, end: 1),
+    builder: (context, value, child) => Opacity(
+      opacity: value,
+      child: child,
+    ),
+    child: const FlutterLogo(),
+  );
+}
 ```
 
 ## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+This package is very simple and will therefore most probably not receive many updates. We will do our best to always maintain compatibility with the most current Flutter version however!
+New features will only be added if they fit the scope of this widget so it won't get bloated.
+
+If you find a bug or want to add things like tests, feel free to open a pull request!
