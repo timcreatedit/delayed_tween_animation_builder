@@ -109,16 +109,19 @@ class _DelayedTweenAnimationBuilderState<T extends Object?>
     if (oldWidget.tween.end != widget.tween.end) _setTween();
   }
 
-  _setTween() => setState(() async {
+  _setTween() => setState(() {
         _tween = _delayExpired ? widget.tween : _constantBeginTween;
         if (!_delayExpired) {
-          await Future.delayed(widget.delay);
-          if (mounted) {
-            setState(() {
-              _delayExpired = widget.delayOnlyOnce;
-              _tween = widget.tween;
-            });
-          }
+          Future.delayed(widget.delay).then(
+            (_) {
+              if (mounted) {
+                setState(() {
+                  _delayExpired = widget.delayOnlyOnce;
+                  _tween = widget.tween;
+                });
+              }
+            },
+          );
         }
       });
 
